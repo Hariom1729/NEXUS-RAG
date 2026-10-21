@@ -1,0 +1,174 @@
+{
+  "theme_concept": {
+    "name": "Academic Enterprise Void",
+    "description": "A clean, modern, dark-mode-first aesthetic inspired by Notion and Perplexity, but elevated with 'Swiss Brutalist' and 'Terminal' micro-motifs. It prioritizes data privacy and high-density information through stark contrast, muted semantic tokens, and an overarching true-gray palette. The UI feels authoritative, scholarly, and offline-secure.",
+    "global_rules": [
+      "Dark mode is the default and primary focus.",
+      "Never use pure black (#000000) or pure white (#FFFFFF); always tint with the background base.",
+      "Color is function only. The UI should be 90% monochrome, with colors used strictly for semantic routing (e.g., text vs visual vs fused paths)."
+    ]
+  },
+  "typography": {
+    "fonts": {
+      "headings": "Chivo",
+      "body": "IBM Plex Sans",
+      "mono": "IBM Plex Mono"
+    },
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl font-black tracking-tighter leading-none",
+      "h2": "text-2xl sm:text-3xl font-bold tracking-tight",
+      "h3": "text-xl sm:text-2xl font-semibold tracking-tight",
+      "h4": "text-lg sm:text-xl font-medium",
+      "body": "text-base leading-relaxed",
+      "small": "text-sm text-muted-foreground",
+      "overline": "text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground"
+    },
+    "rules": [
+      "Headings MUST use tight letter spacing (tracking-tight or tracking-tighter).",
+      "Use IBM Plex Mono for all latency breakdowns, chunk sizes, filenames, and system logs.",
+      "The jump between a heading and its subheading must not exceed 2 Tailwind steps."
+    ]
+  },
+  "colors": {
+    "background": {
+      "app": "#0C0C0E",
+      "surface_1": "#16161A",
+      "surface_2": "#202024",
+      "surface_hover": "#2A2A30"
+    },
+    "text": {
+      "primary": "#EDEDED",
+      "secondary": "#A1A1AA",
+      "disabled": "#52525B"
+    },
+    "borders": {
+      "default": "#27272A",
+      "focus": "#D4D4D8"
+    },
+    "accents": {
+      "primary": "#F8F9FA",
+      "text_path": "#818CF8",
+      "visual_path": "#FBBF24",
+      "fused_path": "#F43F5E",
+      "success": "#34D399",
+      "danger": "#F87171",
+      "warning": "#FBBF24"
+    },
+    "rules": [
+      "Accents are desaturated to prevent OLED 'glowing' fatigue.",
+      "Focus states MUST have higher contrast than the default state. Example: focus:ring-2 focus:ring-zinc-300."
+    ]
+  },
+  "surfaces": {
+    "app_sidebar": {
+      "style": "Solid Background with a hard right border.",
+      "classes": "bg-[#0C0C0E] border-r border-[#27272A]"
+    },
+    "cards_and_citations": {
+      "style": "Flat Solid surfaces. NO glassmorphism to preserve data clarity.",
+      "classes": "bg-[#16161A] border border-[#27272A] rounded-lg shadow-sm hover:border-[#3F3F46] transition-colors"
+    },
+    "explainability_dashboard": {
+      "style": "Grid Borders (The Technical Look). Expose the skeleton.",
+      "classes": "border-collapse border-r border-b border-[#27272A]"
+    },
+    "drag_drop_zone": {
+      "style": "The Tracing Beam pattern.",
+      "classes": "relative border-2 border-dashed border-[#3F3F46] bg-[#16161A] hover:border-[#818CF8] transition-colors"
+    }
+  },
+  "layouts": {
+    "page_structure": "Sidebar on the left (w-64 or w-72), main content on the right. Mobile: Bottom nav or hamburger.",
+    "chat_area": "Max-width centered container (max-w-4xl) within the main area, ensuring spacious reading. Input anchored at the bottom.",
+    "dashboard_grid": {
+      "name": "High Density Grid",
+      "strategy": "grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 or gap-6.",
+      "spans": {
+        "summary": "col-span-1",
+        "primary_chart": "col-span-2 row-span-2",
+        "feed_list": "col-span-1 row-span-2"
+      }
+    },
+    "spacing": "Use Generous Spacing Philosophy. Use p-6 or p-8 for card internals to prevent text collision."
+  },
+  "components": {
+    "chat_search": {
+      "instructions": "Input area should be large, multi-line, placed at bottom. Answers must stream in. Source citations should appear as a horizontal flex list of small cards above the answer. Each citation card includes an icon (doc/image/audio), filename (mono font), and relevance score."
+    },
+    "knowledge_base": {
+      "instructions": "Use Shadcn Table. Dense styling. Columns: Modality (Icon), Name, Size, Chunk Count, Status (Badge), Actions (Delete/Re-index). Include a top bar for 'Bulk Actions' and collection filtering."
+    },
+    "explainability_dashboard": {
+      "instructions": "Divide into 3 logical columns for Text, Visual, and Fused rankings. Use Recharts for the latency breakdown (Stacked Bar) and Recharts ScatterChart for the 2D embedding space (UMAP/t-SNE). Data must use the designated semantic colors (Indigo, Amber, Rose)."
+    },
+    "ingestion_pipeline": {
+      "instructions": "Massive drag-and-drop zone. Below it, a live list of files currently processing. Status uses a step-based horizontal progress indicator: Queued -> Parsing -> Embedding -> Indexed. Use IBM Plex Mono for the log outputs."
+    },
+    "system_status_panel": {
+      "instructions": "Place in sidebar or top header. Needs a glowing dot (green/red) indicating 'Offline Mode Active'. Display current loaded model and ChromaDB collection stats (doc counts)."
+    },
+    "settings": {
+      "instructions": "Use Shadcn Sliders for chunk size, overlap, top-k, and RRF weighting. Clean form layouts with clear description text below each label."
+    }
+  },
+  "motion": {
+    "rules": [
+      "Hover states for all interactive elements (transition: background-color 0.2s ease, border-color 0.2s ease).",
+      "Staggered entrance animations for chat messages and dashboard widgets (framer-motion).",
+      "Micro-animations on citations (slight translateY on hover).",
+      "Respect prefers-reduced-motion."
+    ]
+  },
+  "3d_and_charts": {
+    "libraries": [
+      "recharts",
+      "framer-motion",
+      "lucide-react"
+    ],
+    "instructions": "Use Recharts for the 2D embedding space scatter plot and latency breakdowns. Ensure charts have transparent backgrounds to blend with the UI. Use a dark-mode optimized axis color (#52525B) and tooltip styling."
+  },
+  "media": {
+    "empty_states_and_login": [
+      {
+        "url": "https://images.unsplash.com/photo-1758073519996-6d3c63b4922c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTJ8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMGRhcmslMjBkYXRhJTIwdmlzdWFsaXphdGlvbiUyMDNkfGVufDB8fHx8MTc4NjUyNzkyNnww&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract blue glowing dots forming wave patterns",
+        "category": "login_background"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502485019198-a625bd53ceb7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1OTV8MHwxfHNlYXJjaHwxfHxkYXJrJTIwbW9vZHklMjBhY2FkZW1pYyUyMGxpYnJhcnklMjBhcmNoaXRlY3R1cmV8ZW58MHx8fHwxNzg1OTUwMjM2fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Moody academic library architecture",
+        "category": "auth_hero_image"
+      }
+    ],
+    "rules": "Never use placeholder images. Render images conditionally with dark overlays (bg-black/60) if used as backgrounds."
+  },
+  "accessibility": {
+    "rules": [
+      "Minimum 4.5:1 contrast for normal text.",
+      "All interactive elements MUST include a data-testid attribute in kebab-case, describing their role.",
+      "Use sonner for accessible toast notifications."
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Install required dependencies: yarn add recharts framer-motion lucide-react sonner",
+    "Use standard Shadcn UI components but strip away default shadows and excessive border radii. Set global radius to 0.3rem or 0.5rem max.",
+    "Do not use transparent backgrounds for dropdowns or modals. Always use solid #16161A with borders.",
+    "Apply `data-testid` to EVERY button, link, input, and interactive chart element.",
+    "Follow the High Density Grid pattern for the Explainability Dashboard, ensuring all charts fill their containers completely."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "You tend to converge toward generic, 'on distribution' outputs. In frontend design, this creates what users call the 'AI slop' aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight.",
+    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients.",
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "You MUST NOT apply universal transition. Eg: `transition: all`. Always add transitions for specific interactive elements excluding transforms.",
+    "You MUST NOT center align the app container, ie do not add `.App { text-align: center; }` in the css file.",
+    "Always use modern button styles like pill-shaped, or sharp button with interaction animations & color relevant to the app style.",
+    "NEVER: use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯 etc for icons.",
+    "Every interaction needs micro-animations - hover states, transitions, and entrance animations. Static = dead.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Main agent relies on these image URLs. Missing categories = main agent will use placeholder text which is FORBIDDEN.",
+    "Prioritize using pre-existing components from src/components/ui when applicable.",
+    "Use `sonner` for toasts located in `/app/frontend/src/components/ui/sonner.js`."
+  ]
+}

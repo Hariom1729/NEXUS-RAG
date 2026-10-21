@@ -1,0 +1,86 @@
+version: "3.9"
+
+services:
+  # ---- Local LLM inference — the whole point of this stack ----
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    # Uncomment to pass through a GPU if the host machine has one:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Pulls the text model AND the vision model into the ollama volume on
+  # first `docker compose up`. Exits once done; safe to re-run (Ollama
+  # skips an already-pulled model). llava:7b (~4.7GB) is the default vision
+  # model — override with OLLAMA_VISION_MODEL=moondream in .env for a much
+  # lighter (~1.7GB), faster but less capable option on modest hardware.
+  ollama-model-init:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: ["sh", "-c", "ollama pull ${OLLAMA_MODEL:-qwen2.5:3b} --insecure 2>&1 || true; ollama pull ${OLLAMA_VISION_MODEL:-llava:7b} --insecure 2>&1 || true"]
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+      args:
+        WHISPER_MODEL_SIZE: ${WHISPER_MODEL_SIZE:-base}
+    depends_on:
+      - mongo
+      - ollama
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+      - DB_NAME=${DB_NAME:-offline_chatbot}
+      - HF_HUB_OFFLINE=1
+      - TRANSFORMERS_OFFLINE=1
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-qwen2.5:3b}
+      - OLLAMA_VISION_MODEL=${OLLAMA_VISION_MODEL:-llava:7b}
+      - ENABLE_IMAGE_CAPTIONING=${ENABLE_IMAGE_CAPTIONING:-true}
+      - STT_PROVIDER=local
+      - CHROMA_PERSIST_DIR=/app/data/chroma
+      - UPLOAD_DIR=/app/data/uploads
+      - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
+      - FRONTEND_URL=http://localhost:8080
+    volumes:
+      - chroma_data:/app/data/chroma
+      - upload_data:/app/data/uploads
+      - generated_data:/app/data/generated
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+volumes:
+  ollama_models:
+  mongo_data:
+  chroma_data:
+  upload_data:
+  generated_data:
