@@ -57,7 +57,6 @@ Jinja2==3.1.6
 jiter==0.16.0
 jmespath==1.1.0
 joblib==1.5.3
-jq==1.12.0
 jsonschema==4.26.0
 jsonschema-specifications==2025.9.1
 kubernetes==36.0.3
@@ -157,7 +156,7 @@ tzdata==2026.3
 uritemplate==4.2.0
 urllib3==2.7.0
 uvicorn==0.25.0
-uvloop==0.22.1
+uvloop==0.22.1; sys_platform != 'win32'
 watchfiles==1.2.0
 websocket-client==1.9.0
 websockets==16.1.1

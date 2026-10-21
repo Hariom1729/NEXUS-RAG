@@ -127,7 +127,34 @@ Before getting started, make sure you have the following installed on your machi
 
 ---
 
-## 🚀 Step-by-Step Setup Guide
+## 🚀 Setup & Installation Guide
+
+### ⚡ Quick 1-Click Automated Setup (Recommended)
+
+We provide automated setup and launch scripts that install all dependencies for both Backend (Python virtualenv, pip packages) and Frontend (npm packages) in one go:
+
+#### 🍎 macOS / 🐧 Linux:
+```bash
+# 1. Install all backend and frontend packages in one step:
+chmod +x setup.sh start.sh
+./setup.sh
+
+# 2. Start both Backend (port 8001) & Frontend (port 3000):
+./start.sh
+```
+
+#### 🪟 Windows:
+```cmd
+:: 1. Install all backend and frontend packages in one step:
+setup.bat
+
+:: 2. Launch both Backend & Frontend in parallel:
+start.bat
+```
+
+---
+
+## 🛠️ Manual Step-by-Step Setup
 
 ### Step 1: Start Local MongoDB
 
